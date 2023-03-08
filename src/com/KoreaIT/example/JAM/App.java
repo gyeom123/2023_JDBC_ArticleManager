@@ -33,7 +33,7 @@ public class App {
 
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_mambager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
 					conn = DriverManager.getConnection(url, "root", "");
 
@@ -83,7 +83,7 @@ public class App {
 
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_mambager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
 					conn = DriverManager.getConnection(url, "root", "");
 
@@ -157,7 +157,7 @@ public class App {
 
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_mambager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
 					conn = DriverManager.getConnection(url, "root", "");
 
@@ -194,6 +194,9 @@ public class App {
 				}
 
 				System.out.printf("%d번 글이 수정되었습니다\n", id);
+			}else {
+				System.out.println("존재하지않는 명령어 입니다.");
+				continue;
 			}
 
 			if (cmd.equals("exit")) {
