@@ -1,3 +1,23 @@
-DROP DATABASE EXISTS  jdbc_article_mambager;
-CREATE DATABASE jdbc_article_mambager;
-USE jdbc_article_mambager;
+DROP DATABASE IF EXISTS `jdbc_article_mambager`;
+CREATE DATABASE `jdbc_article_mambager`;
+USE `jdbc_article_mambager`;
+
+
+CREATE TABLE article(
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	updateDAte DATETIME NOT NULL,
+	title VARCHAR(100) NOT NULL,
+	`body` TEXT NOT NULL
+);
+
+
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDAte = NOW(),
+title = CONCAT('제목',RAND()),
+`body` = ('내용',RAND());
+
+DESC article;
+SELECT * FROM article;
