@@ -28,7 +28,94 @@ public class App {
 				System.out.printf("명령어) ");
 				String cmd = sc.nextLine().trim();
 
-				if (cmd.equals("article write")) {
+				if (cmd.equals("member join")) {
+					String loginId = null;
+					String loginPw = null;
+					String loginPwChk = null;
+					String name = null;
+					System.out.println("== 회원 가입 ==");
+
+					while (true) {
+						System.out.printf("로그인 아이디 : ");
+						loginId = sc.nextLine().trim();
+
+						if (loginId.length() == 0) {
+							System.out.println("아이디를 입력해주세요");
+							continue;
+						}
+
+						SecSql sql = new SecSql();
+
+						// sql.append("SELECT COUNT(*)"); => 1
+						// sql.append("SELECT COUNT(*) > 0"); => 2 ☆맞는 경우가 '하나'라도 있으면 1, 맞는 경우가 '없다면' 0
+						sql.append("SELECT COUNT(loginId) > 0"); // => 3
+						sql.append("FROM `member`");
+						sql.append("WHERE loginId = ?", loginId);
+
+						Boolean isLoginIdDup = DBUtil.selectRowBooleanValue(conn, sql);
+
+						if (isLoginIdDup) {
+							System.out.printf("%s은(는) 사용중인 아이디 입니다.\n", loginId);
+							continue;
+						}
+						System.out.printf("%s은(는) 사용가능한 아이디 입니다.\n", loginId);
+						break;
+					}
+
+					while (true) {
+						System.out.printf("로그인 비밀번호 : ");
+						loginPw = sc.nextLine().trim();
+
+						if (loginPw.length() == 0) {
+							System.out.println("비밀번호를 입력해주세요");
+							continue;
+						}
+
+						boolean loginPwCheck = true;
+
+						while (true) {
+							System.out.printf("로그인 비밀번호 확인 : ");
+							loginPwChk = sc.nextLine().trim();
+
+							if (loginPwChk.length() == 0) {
+								System.out.println("비밀번호 확인을 입력해주세요");
+								continue;
+							}
+
+							if (loginPw.equals(loginPwChk) == false) {
+								System.out.println("비밀번호가 일치하지 않습니다. 다시 입력해주세요");
+								loginPwCheck = false;
+							}
+							break;
+						}
+						if (loginPwCheck) {
+							break;
+						}
+					}
+					while (true) {
+						System.out.printf("이름 : ");
+						name = sc.nextLine().trim();
+
+						if (name.length() == 0) {
+							System.out.println("이름을 입력해주세요");
+							continue;
+						}
+						break;
+					}
+
+					SecSql sql = new SecSql();
+
+					sql.append("INSERT INTO `member`");
+					sql.append("SET regDate = NOW()");
+					sql.append(", updateDate = NOW()");
+					sql.append(", loginId = ?", loginId);
+					sql.append(", loginPw = ?", loginPw);
+					sql.append(", `name` = ?", name);
+
+					DBUtil.insert(conn, sql);
+
+					System.out.printf("%s 회원님 환영합니다\n", name);
+				} else if (cmd.equals("article write")) {
 					System.out.println("== 게시물 작성 ==");
 
 					System.out.printf("제목 : ");
@@ -116,26 +203,25 @@ public class App {
 					sql.append("SELECT *");
 					sql.append("FROM article");
 					sql.append("WHERE id = ?", id);
-					
 
 					Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-					
-					//isEmpty = 비워있으면 true, 데이터가 있으면 false, null로는 검증이 되지않는다
-					if(articleMap.isEmpty()) {
+
+					// isEmpty = 비워있으면 true, 데이터가 있으면 false, null로는 검증이 되지않는다
+					if (articleMap.isEmpty()) {
 						System.out.printf("%d번 글은 존재하지 않습니다.\n", id);
 						continue;
 					}
-					
-					System.out.printf("==%d번 게시글 상세보기==\n",id);
-					
+
+					System.out.printf("==%d번 게시글 상세보기==\n", id);
+
 					Article article = new Article(articleMap);
-					
+
 					System.out.printf("번호 :%d\n", article.id);
 					System.out.printf("작성날짜 :%s\n", article.regDate);
 					System.out.printf("수정날짜 :%s\n", article.updateDate);
 					System.out.printf("제목 :%s\n", article.title);
 					System.out.printf("내용 :%s\n", article.body);
-					
+
 				} else if (cmd.startsWith("article delete ")) {
 					int id = Integer.parseInt(cmd.split(" ")[2]);
 
