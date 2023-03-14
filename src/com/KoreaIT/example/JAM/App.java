@@ -177,6 +177,10 @@ public class App {
 						continue;
 					}
 
+					
+					
+					
+					
 					System.out.println("== 게시물 수정 ==");
 
 					System.out.printf("수정할 제목 : ");
