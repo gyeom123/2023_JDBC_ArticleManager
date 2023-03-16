@@ -4,20 +4,27 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Scanner;
 
-import com.KoreaIT.example.JAM.Article;
+import com.KoreaIT.example.Dto.Article;
+import com.KoreaIT.example.JAM.Session.Session;
 import com.KoreaIT.example.JAM.service.ArticleService;
 
 public class ArticleController {
-	
+
 	private ArticleService articleService;
 	private Scanner sc;
-	
+
 	public ArticleController(Connection conn, Scanner sc) {
 		this.articleService = new ArticleService(conn);
 		this.sc = sc;
 	}
 
 	public void doWrite() {
+
+		if (Session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요");
+			return;
+		}
+
 		System.out.println("== 게시물 작성 ==");
 
 		System.out.printf("제목 : ");
@@ -25,11 +32,11 @@ public class ArticleController {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 
-		int id = articleService.doWrite(title, body);
+		int id = articleService.doWrite(title, body, Session.loginedMember.id);
 
 		System.out.printf("%d번 글이 생성되었습니다\n", id);
 	}
-	
+
 	public void showList() {
 		System.out.println("== 게시물 목록 ==");
 
@@ -40,15 +47,20 @@ public class ArticleController {
 			return;
 		}
 
-		System.out.println("번호	|	제목");
+		System.out.println("번호	|	제목		|	작성자");
 
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s\n", article.id, article.title);
+			System.out.printf("%d	|	%s		|%s\n", article.id, article.title,article.memberLoginName);
 		}
 	}
 
 	public void showDetail(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
+
+		if (Session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요");
+			return;
+		}
 
 		Article article = articleService.getArticle(id);
 
@@ -68,6 +80,11 @@ public class ArticleController {
 
 	public void doModify(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
+
+		if (Session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요");
+			return;
+		}
 
 		int articleCount = articleService.getArticleCount(id);
 
@@ -90,6 +107,11 @@ public class ArticleController {
 
 	public void doDelete(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
+
+		if (Session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요");
+			return;
+		}
 
 		int articleCount = articleService.getArticleCount(id);
 

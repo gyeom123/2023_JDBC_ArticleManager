@@ -1,13 +1,16 @@
-package com.KoreaIT.example.JAM;
+package com.KoreaIT.example.Dto;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+
+import com.KoreaIT.example.JAM.Session.Session;
 
 public class Article {
 	public int id;
 	public LocalDateTime regDate;
 	public LocalDateTime updateDate;
 	public String title;
+	public String memberLoginName;
 	public String body;
 
 	public Article(Map<String, Object> articleMap) {
@@ -23,5 +26,5 @@ public class Article {
 		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
 				+ ", body=" + body + "]";
 	}
-	
+
 }

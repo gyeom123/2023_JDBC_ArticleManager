@@ -15,13 +15,14 @@ public class ArticleDao {
 		this.conn = conn;
 	}
 
-	public int doWrite(String title, String body) {
+	public int doWrite(String title, String body, int loginedMemberid) {
 		
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO article");
 		sql.append("SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
+		sql.append(", memberId = ?", loginedMemberid);
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);
 		
@@ -34,6 +35,12 @@ public class ArticleDao {
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("ORDER BY id DESC");
+
+//		SELECT article.*, member.id AS `mId`, member.name AS memberName
+//		FROM article
+//		INNER JOIN `member`
+//		ON article.memberId = member.id
+//		WHERE article.id = 1;
 		
 		return DBUtil.selectRows(conn, sql);
 	}
@@ -44,6 +51,7 @@ public class ArticleDao {
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
+		//sql.append("WHERE memberId = ?", id);
 		
 		return DBUtil.selectRow(conn, sql);
 	}
@@ -54,6 +62,7 @@ public class ArticleDao {
 		sql.append("SELECT COUNT(*)");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
+		
 		
 		return DBUtil.selectRowIntValue(conn, sql);
 	}

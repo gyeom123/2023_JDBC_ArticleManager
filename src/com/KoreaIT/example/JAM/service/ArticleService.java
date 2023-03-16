@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.KoreaIT.example.JAM.Article;
+import com.KoreaIT.example.Dto.Article;
 import com.KoreaIT.example.JAM.dao.ArticleDao;
 
 public class ArticleService {
@@ -16,8 +16,8 @@ public class ArticleService {
 		this.articleDao = new ArticleDao(conn);
 	}
 
-	public int doWrite(String title, String body) {
-		return articleDao.doWrite(title, body);
+	public int doWrite(String title, String body, int loginedMemberid) {
+		return articleDao.doWrite(title, body,loginedMemberid);
 	}
 	
 	public List<Article> getArticles(){
