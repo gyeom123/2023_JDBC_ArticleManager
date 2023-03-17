@@ -47,21 +47,19 @@ public class ArticleController {
 			return;
 		}
 
-		System.out.println("번호	|	제목		|	작성자	|	작성날짜");
+		System.out.println("번호	|	제목		|	작성자	|	작성날짜	|	조회수");
 
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s		|%s		|%s	\n", article.id, article.title, article.writerName,
-					article.updateDate);
+			System.out.printf("%d	|	%s		|%s		|%s		|	%d\n", article.id, article.title,
+					article.writerName, article.updateDate, article.views);
 		}
 	}
 
 	public void showDetail(String cmd) {
+
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
-		if (Session.isLogined() == false) {
-			System.out.println("로그인 후 이용해주세요");
-			return;
-		}
+		articleService.increseViewsCut(id);
 
 		Article article = articleService.getArticle(id);
 
@@ -69,7 +67,6 @@ public class ArticleController {
 			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
 			return;
 		}
-		
 
 		System.out.printf("== %d번 게시물 상세보기 ==\n", id);
 
@@ -77,17 +74,20 @@ public class ArticleController {
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
 		System.out.printf("작성자 : %s\n", article.writerName);
+		System.out.printf("조회수 : %d\n", article.views);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
+
 	}
 
 	public void doModify(String cmd) {
-		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		if (Session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
+
+		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(id);
 
@@ -95,7 +95,7 @@ public class ArticleController {
 			System.out.printf("%d번 글은 존재하지 않습니다\n", id);
 			return;
 		}
-		
+
 		if (article.memberId != Session.loginedMemberId) {
 			System.out.printf("%d번 게시글의 권한이 없습니다.\n", id);
 			return;
@@ -114,12 +114,13 @@ public class ArticleController {
 	}
 
 	public void doDelete(String cmd) {
-		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		if (Session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
+
+		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(id);
 
@@ -127,7 +128,7 @@ public class ArticleController {
 			System.out.printf("%d번 글은 존재하지 않습니다\n", id);
 			return;
 		}
-		
+
 		if (article.memberId != Session.loginedMemberId) {
 			System.out.printf("%d번 게시글의 권한이 없습니다.\n", id);
 			return;
