@@ -47,10 +47,11 @@ public class ArticleController {
 			return;
 		}
 
-		System.out.println("번호	|	제목		|	작성자");
+		System.out.println("번호	|	제목		|	작성자	|	작성날짜");
 
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s		|%s\n", article.id, article.title,article.memberLoginName);
+			System.out.printf("%d	|	%s		|%s		|%s	\n", article.id, article.title, article.writerName,
+					article.updateDate);
 		}
 	}
 
@@ -68,12 +69,14 @@ public class ArticleController {
 			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
 			return;
 		}
+		
 
 		System.out.printf("== %d번 게시물 상세보기 ==\n", id);
 
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
+		System.out.printf("작성자 : %s\n", article.writerName);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 	}
@@ -86,10 +89,15 @@ public class ArticleController {
 			return;
 		}
 
-		int articleCount = articleService.getArticleCount(id);
+		Article article = articleService.getArticle(id);
 
-		if (articleCount == 0) {
+		if (article == null) {
 			System.out.printf("%d번 글은 존재하지 않습니다\n", id);
+			return;
+		}
+		
+		if (article.memberId != Session.loginedMemberId) {
+			System.out.printf("%d번 게시글의 권한이 없습니다.\n", id);
 			return;
 		}
 
@@ -113,10 +121,15 @@ public class ArticleController {
 			return;
 		}
 
-		int articleCount = articleService.getArticleCount(id);
+		Article article = articleService.getArticle(id);
 
-		if (articleCount == 0) {
+		if (article == null) {
 			System.out.printf("%d번 글은 존재하지 않습니다\n", id);
+			return;
+		}
+		
+		if (article.memberId != Session.loginedMemberId) {
+			System.out.printf("%d번 게시글의 권한이 없습니다.\n", id);
 			return;
 		}
 
